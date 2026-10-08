@@ -12,8 +12,9 @@ Check out DESIGN.md for game design ideas.
 ## Technology
 
 We're using **Lua** with the **LÖVE** (Love2D) framework — the same tools Balatro
-was built with. Install on Arch with `sudo pacman -S love`, and run the game from
-the project folder with `love .`.
+was built with. We're on Ubuntu under WSL (Windows Subsystem for Linux). Install
+with `sudo apt update && sudo apt install love`, and run the game from the project
+folder with `love .` (the window shows up on the Windows desktop via WSLg).
 
 Every LÖVE game is built around three functions:
 - `love.load()` — runs once at the start (set up the player, the first wave)
