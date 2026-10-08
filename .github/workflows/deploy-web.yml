@@ -1,0 +1,55 @@
+# Builds the LÖVE game for the browser and publishes it to GitHub Pages.
+# Runs on every push to main (and can be started by hand from the Actions tab).
+name: Deploy web build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Pages deploys need permission to write to Pages and prove who they are.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deploy at a time; a newer push cancels an older in-progress one.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      # A .love file is just a zip of the game folder with main.lua at the top.
+      - name: Package game.love
+        run: zip -9 -r game.love . -x '.git/*' '.github/*' '*.md' '.gitignore'
+
+      # love.js compiles LÖVE (via Emscripten) to run our .love file in the browser.
+      # -c = compatibility mode, needed because GitHub Pages can't send the
+      #      special headers the faster threaded mode requires.
+      - name: Convert to HTML/JS with love.js
+        run: npx --yes love.js@11.4.1 -c -t "Game" game.love dist
+
+      - uses: actions/configure-pages@v6
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
