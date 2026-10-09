@@ -4,6 +4,8 @@ function love.load()
     y = 284,
     size = 32,
     speed = 400,
+    batRange = 60,
+    swingTimer = 0,
   }
 
   kid = {
@@ -20,9 +22,20 @@ function love.draw()
 
   love.graphics.setColor(1, 0.8, 0.2)
   love.graphics.rectangle("fill", kid.x, kid.y, kid.size, kid.size)
+
+  if player.swingTimer > 0 then
+    local centerX = player.x + player.size / 2
+    local centerY = player.y + player.size / 2
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.circle("line", centerX, centerY, player.batRange)
+  end
 end
 
 function love.update(dt)
+  if player.swingTimer > 0 then
+    player.swingTimer = player.swingTimer - dt
+  end
+
   if love.keyboard.isDown("right", "d") then
     if player.x >= 768 then
       player.x = 768
@@ -59,5 +72,11 @@ function love.update(dt)
   if distance > 0 then
     kid.x = kid.x + (dx / distance) * kid.speed * dt
     kid.y = kid.y + (dy / distance) * kid.speed * dt
+  end
+end
+
+function love.keypressed(key)
+  if key == "space" then
+    player.swingTimer = 0.15
   end
 end
