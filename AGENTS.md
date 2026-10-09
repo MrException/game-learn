@@ -12,9 +12,17 @@ Check out DESIGN.md for game design ideas.
 ## Technology
 
 We're using **Lua** with the **LÖVE** (Love2D) framework — the same tools Balatro
-was built with. We're on Ubuntu under WSL (Windows Subsystem for Linux). Install
-with `sudo apt update && sudo apt install love`, and run the game from the project
-folder with `love .` (the window shows up on the Windows desktop via WSLg).
+was built with. Works on macOS, Linux (Arch), and Windows via WSL (Ubuntu; the
+window shows up on the Windows desktop via WSLg).
+
+Tools are pinned in `mise.toml` (Lua 5.1, LÖVE 11.5, StyLua, selene):
+1. Install [mise](https://mise.jdx.dev).
+2. Linux/WSL only: install build tools so Lua can compile
+   (`sudo apt install build-essential libreadline-dev` on Ubuntu,
+   `sudo pacman -S base-devel` on Arch).
+3. `make setup` installs everything. macOS builds selene from source, so it needs Rust.
+
+Day to day: `make run` (play), `make format`, `make lint`, `make check`. `make help` lists them.
 
 Every LÖVE game is built around three functions:
 - `love.load()` — runs once at the start (set up the player, the first wave)

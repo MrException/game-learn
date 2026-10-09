@@ -1,0 +1,19 @@
+[tools]
+lua = "5.1"
+stylua = "latest"
+
+# Each tool below is limited to the OSes it works on, so `mise install` picks
+# the right one everywhere (macOS, Linux, WSL).
+
+# selene: the prebuilt macOS binary is arm64-only, so macOS builds it from source.
+"aqua:Kampfkarren/selene" = { version = "latest", os = ["linux", "windows"] }
+"cargo:selene" = { version = "latest", os = ["macos"] }
+
+# love has no mise registry entry, so fetch the official release for each OS.
+[tools."github:love2d/love"]
+version = "11.5"
+
+[tools."github:love2d/love".platforms]
+macos-x64 = { asset_pattern = "love-*-macos.zip", bin_path = "love.app/Contents/MacOS" }
+macos-arm64 = { asset_pattern = "love-*-macos.zip", bin_path = "love.app/Contents/MacOS" }
+linux-x64 = { asset_pattern = "love-*-x86_64.AppImage" }

@@ -1,63 +1,63 @@
 function love.load()
-    player = {
-      x = 384,
-      y = 284,
-      size = 32,
-      speed = 400
-    }
+  player = {
+    x = 384,
+    y = 284,
+    size = 32,
+    speed = 400,
+  }
 
-    kid = {
-      x = 0,
-      y = 0,
-      size = 24,
-      speed = 100
-    }
-  end
+  kid = {
+    x = 0,
+    y = 0,
+    size = 24,
+    speed = 100,
+  }
+end
 
-  function love.draw()
-    love.graphics.setColor(0.1, 0.1, 1)
-    love.graphics.rectangle("fill", player.x, player.y, player.size, player.size)
+function love.draw()
+  love.graphics.setColor(0.1, 0.1, 1)
+  love.graphics.rectangle("fill", player.x, player.y, player.size, player.size)
 
-    love.graphics.setColor(1, 0.8, 0.2)
-    love.graphics.rectangle("fill", kid.x, kid.y, kid.size, kid.size)
-  end
+  love.graphics.setColor(1, 0.8, 0.2)
+  love.graphics.rectangle("fill", kid.x, kid.y, kid.size, kid.size)
+end
 
-function love.update(dt)   
-   if love.keyboard.isDown("right", "d") then
-     if player.x >= 768 then
-       player.x = 768
-     else  
+function love.update(dt)
+  if love.keyboard.isDown("right", "d") then
+    if player.x >= 768 then
+      player.x = 768
+    else
       player.x = player.x + player.speed * dt
-     end
-   end
-    if love.keyboard.isDown("left", "a") then
-      if player.x <= 0 then
-        player.x = 0
-      else
-        player.x = player.x - player.speed * dt
-      end
-    end
-    if love.keyboard.isDown("down", "s") then
-      if player.y >= 568 then
-        player.y = 568
-      else
-        player.y = player.y + player.speed * dt
     end
   end
-    if love.keyboard.isDown("up", "w") then
-      if player.y <= 0 then
-        player.y = 0
-      else
-        player.y = player.y - player.speed * dt
-      end
+  if love.keyboard.isDown("left", "a") then
+    if player.x <= 0 then
+      player.x = 0
+    else
+      player.x = player.x - player.speed * dt
     end
+  end
+  if love.keyboard.isDown("down", "s") then
+    if player.y >= 568 then
+      player.y = 568
+    else
+      player.y = player.y + player.speed * dt
+    end
+  end
+  if love.keyboard.isDown("up", "w") then
+    if player.y <= 0 then
+      player.y = 0
+    else
+      player.y = player.y - player.speed * dt
+    end
+  end
 
-    -- the kid walks toward the player
-    local dx = player.x - kid.x
-    local dy = player.y - kid.y
-    local distance = math.sqrt(dx * dx + dy * dy)
-    if distance > 0 then
-      kid.x = kid.x + (dx / distance) * kid.speed * dt
-      kid.y = kid.y + (dy / distance) * kid.speed * dt
-    end
+  -- the kid walks toward the player
+  local dx = player.x - kid.x
+  local dy = player.y - kid.y
+  local distance = math.sqrt(dx * dx + dy * dy)
+  if distance > 0 then
+    kid.x = kid.x + (dx / distance) * kid.speed * dt
+    kid.y = kid.y + (dy / distance) * kid.speed * dt
+  end
 end

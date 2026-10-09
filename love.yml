@@ -1,0 +1,9 @@
+---
+base: lua51
+globals:
+  love:
+    any: true
+  player:
+    any: true
+  kid:
+    any: true
