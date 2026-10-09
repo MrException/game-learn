@@ -5,11 +5,21 @@ function love.load()
       size = 32,
       speed = 400
     }
+
+    kid = {
+      x = 0,
+      y = 0,
+      size = 24,
+      speed = 100
+    }
   end
 
   function love.draw()
     love.graphics.setColor(0.1, 0.1, 1)
     love.graphics.rectangle("fill", player.x, player.y, player.size, player.size)
+
+    love.graphics.setColor(1, 0.8, 0.2)
+    love.graphics.rectangle("fill", kid.x, kid.y, kid.size, kid.size)
   end
 
 function love.update(dt)   
@@ -41,6 +51,13 @@ function love.update(dt)
         player.y = player.y - player.speed * dt
       end
     end
+
+    -- the kid walks toward the player
+    local dx = player.x - kid.x
+    local dy = player.y - kid.y
+    local distance = math.sqrt(dx * dx + dy * dy)
+    if distance > 0 then
+      kid.x = kid.x + (dx / distance) * kid.speed * dt
+      kid.y = kid.y + (dy / distance) * kid.speed * dt
+    end
 end
-
-
