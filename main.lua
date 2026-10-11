@@ -13,6 +13,7 @@ function love.load()
     y = 0,
     size = 24,
     speed = 100,
+    bopped = false,
   }
 end
 
@@ -20,7 +21,11 @@ function love.draw()
   love.graphics.setColor(0.1, 0.1, 1)
   love.graphics.rectangle("fill", player.x, player.y, player.size, player.size)
 
-  love.graphics.setColor(1, 0.8, 0.2)
+  if kid.bopped then
+    love.graphics.setColor(0.5, 0.9, 0.1)
+  else
+    love.graphics.setColor(1, 0.8, 0.2)
+  end
   love.graphics.rectangle("fill", kid.x, kid.y, kid.size, kid.size)
 
   if player.swingTimer > 0 then
@@ -66,17 +71,24 @@ function love.update(dt)
   end
 
   -- the kid walks toward the player
-  local dx = player.x - kid.x
-  local dy = player.y - kid.y
-  local distance = math.sqrt(dx * dx + dy * dy)
-  if distance > 0 then
-    kid.x = kid.x + (dx / distance) * kid.speed * dt
-    kid.y = kid.y + (dy / distance) * kid.speed * dt
+  if not kid.bopped then
+    local dx = player.x - kid.x
+    local dy = player.y - kid.y
+    local distance = math.sqrt(dx * dx + dy * dy)
+    if distance > 0 then
+      kid.x = kid.x + (dx / distance) * kid.speed * dt
+      kid.y = kid.y + (dy / distance) * kid.speed * dt
+    end
   end
 end
-
 function love.keypressed(key)
   if key == "space" then
     player.swingTimer = 0.15
+    local dx = (kid.x + kid.size / 2) - (player.x + player.size / 2)
+    local dy = (kid.y + kid.size / 2) - (player.y + player.size / 2)
+    local distance = math.sqrt(dx * dx + dy * dy)
+    if distance < player.batRange then
+      kid.bopped = true
+    end
   end
 end
