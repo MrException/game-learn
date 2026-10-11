@@ -7,3 +7,5 @@ globals:
     any: true
   kid:
     any: true
+  score:
+    any: true

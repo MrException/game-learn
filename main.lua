@@ -1,3 +1,4 @@
+-- This is where we Set Up the game. It runs only once!
 function love.load()
   player = {
     x = 384,
@@ -15,8 +16,10 @@ function love.load()
     speed = 100,
     bopped = false,
   }
+  score = 0
 end
 
+-- This is where we draw the game. It runs a whole bunch of times!
 function love.draw()
   love.graphics.setColor(0.1, 0.1, 1)
   love.graphics.rectangle("fill", player.x, player.y, player.size, player.size)
@@ -34,8 +37,15 @@ function love.draw()
     love.graphics.setColor(1, 1, 1)
     love.graphics.circle("line", centerX, centerY, player.batRange)
   end
+  love.graphics.setColor(1, 1, 1)
+  love.graphics.print("Score: " .. score, 10, 10)
+
+  if kid.bopped then
+    love.graphics.print("WAAAH!", kid.x - 10, kid.y - 20)
+  end
 end
 
+-- This is where we change things in the game. It runs a whole bunch times!
 function love.update(dt)
   if player.swingTimer > 0 then
     player.swingTimer = player.swingTimer - dt
@@ -70,17 +80,21 @@ function love.update(dt)
     end
   end
 
-  -- the kid walks toward the player
-  if not kid.bopped then
-    local dx = player.x - kid.x
-    local dy = player.y - kid.y
-    local distance = math.sqrt(dx * dx + dy * dy)
-    if distance > 0 then
-      kid.x = kid.x + (dx / distance) * kid.speed * dt
-      kid.y = kid.y + (dy / distance) * kid.speed * dt
+  -- the kid walks toward the player, or runs away if bopped
+  local dx = player.x - kid.x
+  local dy = player.y - kid.y
+  local distance = math.sqrt(dx * dx + dy * dy)
+  if distance > 0 then
+    local speed = kid.speed
+    if kid.bopped then
+      speed = -300
     end
+    kid.x = kid.x + (dx / distance) * speed * dt
+    kid.y = kid.y + (dy / distance) * speed * dt
   end
 end
+
+-- This gets called when the player presses a key. It only gets called ONE time when the player presses the key.
 function love.keypressed(key)
   if key == "space" then
     player.swingTimer = 0.15
@@ -89,6 +103,7 @@ function love.keypressed(key)
     local distance = math.sqrt(dx * dx + dy * dy)
     if distance < player.batRange then
       kid.bopped = true
+      score = score + 1
     end
   end
 end
