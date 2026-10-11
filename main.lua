@@ -101,7 +101,7 @@ function love.keypressed(key)
     local dx = (kid.x + kid.size / 2) - (player.x + player.size / 2)
     local dy = (kid.y + kid.size / 2) - (player.y + player.size / 2)
     local distance = math.sqrt(dx * dx + dy * dy)
-    if distance < player.batRange then
+    if distance < player.batRange and not kid.bopped then
       kid.bopped = true
       score = score + 1
     end
